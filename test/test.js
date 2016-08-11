@@ -1,2 +1,3 @@
-import path from 'path';
-console.log(path)
+import * as Chart from 'chart.js'
+
+console.log(Chart)

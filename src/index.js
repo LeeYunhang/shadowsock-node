@@ -1,5 +1,6 @@
 const {app, BrowserWindow, globalShortcut} = require('electron')
 import path from 'path'
+import debounce from 'debounce'
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -7,10 +8,13 @@ let win
 
 function createWindow () {
   // Create the browser window.
-  win = new BrowserWindow({width: 700, height: 450})
+  win = new BrowserWindow({width: 433, height: 461})
 
   // and load the index.html of the app.
   win.loadURL(`file://${path.join(__dirname, '..')}/index.html`)
+
+  //disable change the size of window
+  // win.setResizable(false)
 
   // Emitted when the window is closed.
   win.on('closed', () => {
@@ -19,6 +23,8 @@ function createWindow () {
     // when you should delete the corresponding element.
     win = null
   })
+
+  win.on('resize', debounce((e) => console.log(win.getSize()), 200))
 
   let contentIsOpened = false
   const contents = win.webContents

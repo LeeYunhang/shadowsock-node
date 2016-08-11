@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chart.js": "^2.2.1",
+    "debounce": "^1.0.0",
     "material-ui": "^0.15.3",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
