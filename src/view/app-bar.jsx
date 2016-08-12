@@ -38,13 +38,14 @@ class AppBarExampleIcon extends React.Component {
                         anchorOrigin={{horizontal: 'right', vertical: 'top'}}
                     >
                         <List>
+                            <MenuItem  primaryText="Add" />
+                            <MenuItem  primaryText="Delete" />
+                        </List>
+                        <Divider />   
+                        <List>
                             <MenuItem  primaryText="Import" />
                             <MenuItem primaryText="Output" />
                         </List>
-                        <Divider />
-                        <List>
-                            <MenuItem  primaryText="Delete" />
-                        </List>                        
                     </IconMenu>
                     }                    
                 />

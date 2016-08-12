@@ -7,7 +7,7 @@ import { hashHistory } from 'react-router'
 
 
 
-export default  class Settings extends Component {
+export default  class PublicHost extends Component {
 
     HandleClose() {
         hashHistory.goBack()
