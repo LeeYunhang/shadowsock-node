@@ -27,7 +27,6 @@ class AppBarExampleIcon extends React.Component {
             <div>
                 <AppBar
                     title="Shadowsocks-Node"
-                    iconClassNameRight="muidocs-icon-navigation-expand-more"
                     onLeftIconButtonTouchTap={this.handleDrawer.bind(this)}
                     iconElementRight={
                     <IconMenu

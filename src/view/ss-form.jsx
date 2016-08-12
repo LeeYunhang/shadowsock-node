@@ -53,7 +53,7 @@ export default class extends Component {
                     />
                 </Paper>
                 <FloatingActionButton style={styles.floatingButton}>
-                    <Send iconStyle={styles.rotate} />
+                    <Send />
                 </FloatingActionButton>
             </div>           
         )

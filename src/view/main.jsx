@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-import MyAppBar from '../app-bar'
+import MyAppBar from './app-bar'
 import Chart  from './traffic-chart'
 import SSForm from './ss-form'
 
