@@ -5,14 +5,14 @@
   "main": "./bin/index.js",
   "scripts": {
     "test": "babel-node ./test/test.js",
-    "start": "babel src -d bin && electron .",
-    "build": "babel src -d bin"
+    "build": "rm -rf bin && babel src -d bin",
+    "watch": "rm -rf bin && babel src --watch -d  bin"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "chart.js": "^2.2.1",
     "debounce": "^1.0.0",
+    "fs-promise": "^0.5.0",
     "material-ui": "^0.15.3",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",

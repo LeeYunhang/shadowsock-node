@@ -1,0 +1,28 @@
+{
+    "configs" : [
+        {
+            "server" : "crazyforcode.org",
+            "server_port" : 4123,
+            "password" : "public",
+            "method" : "aes-256-cfb",
+            "remarks" : ""
+        },
+        {
+            "server" : "76.164.224.102",
+            "server_port" : 36796,
+            "password" : "62910666",
+            "method" : "aes-256-cfb",
+            "remarks" : ""
+        }
+    ],
+    "strategy" : null,
+    "index" : 1,
+    "global" : false,
+    "enabled" : true,
+    "shareOverLan" : false,
+    "isDefault" : false,
+    "localPort" : 1081,
+    "pacUrl" : null,
+    "useOnlinePac" : false,
+    "availabilityStatistics" : false
+}

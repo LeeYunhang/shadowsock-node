@@ -17,7 +17,7 @@ export default class SelectFieldExampleSimple extends React.Component {
   constructor(props) {
     super(props);
     
-    this.state = {value: 1};
+    this.state = {value: 3};
     this.handleChange = (event, index, value) => this.setState({value});
   }
 
