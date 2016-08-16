@@ -1,3 +1,4 @@
-import * as config from '../bin/model/user-config'
+import { createStore } from 'redux'
 
-config.getConfigs()
+
+console.log(createStore);

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+</head>
+<body>
+    <input type="text" value="12312s3">
+    <script async>
+        var input = document.getElementsByTagName('input')[0]
+        input.addEventListener('change', function(e) {
+            console.log(input.getAttribute('value'))
+        })
+    </script>
+</body>
+</html>

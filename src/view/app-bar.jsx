@@ -49,7 +49,10 @@ class AppBarExampleIcon extends React.Component {
                     </IconMenu>
                     }                    
                 />
-                <MyDrawer open={this.state.open} 
+                <MyDrawer
+                    open={this.state.open} 
+                    onEvent={this.props.onEvent}
+                    configs={this.props.configs}
                     handleDrawer={this.handleDrawer.bind(this)}
                 />
             </div>

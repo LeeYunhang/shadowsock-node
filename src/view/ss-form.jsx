@@ -8,53 +8,76 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Done from 'material-ui/svg-icons/action/done';
 
-import shadowsocks, { server } from '../controller/shadowsocks'
 import EncryptSelector from './encrypt-method-selector'
+
+export const START_CONNECT = Symbol('start connect')
+export const CLOSE_CONNECT = Symbol('close connect')
 
 export default class extends Component {
 
     constructor(props) {
         super(props)
+
         this.state = { 
             open: false,
-
-            floatingButtonIcon: <Send />
+            method: 'aes-256-cfb',
+            password: '62910666',
+            serverName: '76.164.224.102',
+            serverPort: 36796,
         }
-
-        this.handleFloatingButtonClicked = this.handleFloatingButtonClicked.bind(this)
-        this.handleTextFieldChange = this.handleTextFieldChange.bind(this)
-        this.handleDialog = this.handleDialog.bind(this)
-        this.handleDialog = this.handleDialog.bind(this)
     }
 
-    handleFloatingButtonClicked() {
+    handleFloatingButtonClicked = () => {
         if (!this.state.serverName) {
             this.handleDialog(true)
             return
         }
 
-        const server = this.state.serverName
-        const server_port = this.state.serverPort
-        const password = this.state.password
-        const method = 'aes-256-cfb'
+        // if connected
+        if (this.props.opened) {
+            this.props.onEvent({
+                type: CLOSE_CONNECT
+            })
+            return
+        }
 
-        shadowsocks({ server, server_port, password, method })
-        .then(server => {
-            this.setState({floatingButtonIcon: <Done />})
+        const remarks = this.state.remarks || 'unnamed'
+        const server = this.state.serverName
+        const server_port = this.state.serverPort || 443
+        const password = this.state.password
+        const local_addr = this.state.localName
+        const local_port = this.state.localPort
+        const method = this.state.method
+        const config = { server, server_port, password, method, remarks, local_addr, local_port }
+        this.props.onEvent({
+            type: START_CONNECT,
+            config
         })
     }
 
-    handleTextFieldChange(e) {
-        this.setState({ [e.target.id]: e.target.value })
+    handleTextFieldChange = (e) => {
+        e.preventDefault()
+        if (!this.props.opened) {
+            this.setState({ [e.target.id]: e.target.value })
+        }
     }
 
-    handleDialog(open = false) {
+    handleDialog = (open = false) => {
         if (typeof open !== 'boolean') { open = false }
         this.setState({ open })
     }
 
+    handleSelectChange = value => {
+        if (!this.props.opened) {
+            this.setState({ method: value })
+        }
+    }
+
 
     render() {
+        const icon = this.props.opened? (<Done />) : (<Send />)
+        const open = this.state.open || false
+        const method = this.state.method
         return (
             <div>
                 <Paper style={styles.paper} zDepth={1} rounded={false}>
@@ -108,16 +131,16 @@ export default class extends Component {
                     <br />
                     <label htmlFor="method" style={styles.label}>method:</label>
                     <EncryptSelector id="method"
+                        value={method}
                         style={styles.TextField}
+                        onEvent={this.handleSelectChange}
                     />
                 </Paper>
                 <FloatingActionButton
-                    onClick={this.handleFloatingButtonClicked} 
+                    onTouchTap={this.handleFloatingButtonClicked}
                     style={styles.floatingButton}
-                    keyboardFocused={true}
-                    onTouchTap={this}
                 >
-                    {this.state.floatingButtonIcon}
+                    {icon}
                 </FloatingActionButton>
                 <Dialog
                     title="Sorry"
@@ -125,12 +148,11 @@ export default class extends Component {
                         <FlatButton
                             label="OK"
                             primary={true}
-                            keyboardFocused={true}
                             onTouchTap={this.handleDialog}
                         />           
                     }
                     modal={false}
-                    open={this.state.open}
+                    open={open}
                     onRequestClose={this.handleDialog}
                 >
                     Please enter your server name

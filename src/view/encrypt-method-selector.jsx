@@ -16,15 +16,67 @@ export default class SelectFieldExampleSimple extends React.Component {
 
   constructor(props) {
     super(props);
-    
-    this.state = {value: 3};
-    this.handleChange = (event, index, value) => this.setState({value});
   }
 
+  handleChange = (event, index, value) => this.props.onEvent(this.getMethodById(value));
+
+  getMethodById = id => {
+    switch(id) {
+      case 1:
+        return 'aes-128-cfb'
+      case 2:
+        return 'aes-192-cfb'
+      case 3:
+        return 'aes-256-cfb'
+      case 4:
+        return 'bf-cfb'
+      case 5:
+        return 'cast5-cfb'
+      case 6:
+        return 'des-cfb'
+      case 7:
+        return 'rc2-cfb'
+      case 8:
+        return 'rc4'
+      case 9:
+        return 'rc4-md5'
+      case 10:
+        return 'seed-cfb'
+      default:
+        return 'aes-256-cfb'    // default is aes-256-cfb
+    }
+  }
+  
+  getIdByMethod = method => {
+    switch(method) {
+      case 'aes-128-cfb':
+        return 1
+      case 'aes-192-cfb':
+        return 2
+      case 'aes-256-cfb':
+        return 3
+      case 'bf-cfb':
+        return 4
+      case 'cast5-cfb':
+        return 5
+      case 'des-cfb':
+        return 6
+      case 'rc2-cfb':
+        return 7
+      case 'rc4':
+        return 8
+      case 'rc4-md5':
+        return 9
+      case 'seed-cfb':
+        return 10
+      default:
+        return 3    // default is aes-256-cfb
+    }
+  }
 
   render() {
     return (
-        <SelectField value={this.state.value} onChange={this.handleChange}>
+        <SelectField value={this.getIdByMethod(this.props.value)} onChange={this.handleChange}>
           <MenuItem value={1} primaryText="aes-128-cfb" />
           <MenuItem value={2} primaryText="aes-192-cfb" />
           <MenuItem value={3} primaryText="aes-256-cfb" />

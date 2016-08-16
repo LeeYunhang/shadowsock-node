@@ -11,27 +11,41 @@ import Done from 'material-ui/svg-icons/action/done';
 import Help from 'material-ui/svg-icons/action/help';
 import { Link } from 'react-router'
 
+export const LIST_ITEM_CLICK = Symbol('list item click')
+//  rightIcon={value.selected? <Done color={pinkA200} /> : undefined}        
 class MyDrawer extends React.Component {
     constructor(props) {
         super(props)
     }
 
+    componentWillUpdate() {
+    }
+
+    configsToListItems = (configs) => {
+        return this.listItems = configs.map((value, index) => {
+            const listItem = <ListItem
+                key={index}
+                onTouchTap={this.props.onEvent.bind(this, {
+                    server: value.server, 
+                    type: LIST_ITEM_CLICK
+                })}
+                primaryText={value.remarks || 'unnamed'}
+                secondaryText={value.server}
+            />
+            return listItem
+        })
+    }
+
     render() {
+        const listItems = this.configsToListItems(this.props.configs)
+        
         return (
             <Drawer 
                 open={this.props.open}
                 docked={false}
                 style={style.root}
                 onRequestChange={this.props.handleDrawer}>
-
-                <List>
-                    <ListItem 
-                        primaryText="cfc" 
-                        rightIcon={<Done color={pinkA200} />}
-                        secondaryText="crazyforcode.org" 
-                        />
-                    <ListItem primaryText="night" secondaryText="10.22.16.100" />
-                </List>      
+                <List>{ listItems }</List>      
                 <Divider />    
                 <List>
                     <ListItem primaryText="Public host" leftIcon={<ContentSend />} containerElement={<Link to={{pathname:"/public-host"}} />} />
