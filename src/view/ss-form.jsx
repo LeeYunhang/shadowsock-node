@@ -73,9 +73,20 @@ export default class extends Component {
         }
     }
 
+    receiveProps = props => {
+        this.state.remarks = props.remarks
+        this.state.serverName = props.server
+        this.state.serverPort = props.server_port
+        this.state.password = props.password
+        this.state.localName = props.local_addr
+        this.state.localPort = props.local_port
+        this.state.method = props.method
+    }
 
+d
     render() {
         const icon = this.props.opened? (<Done />) : (<Send />)
+        this.receiveProps(this.props)
         const open = this.state.open || false
         const method = this.state.method
         return (

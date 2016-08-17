@@ -12,18 +12,32 @@ export default class extends Component {
         super()
         this.state = {
             opened: false,
-            'configs': []
+            configs: [],
+            currentConfig: {}
         }
-        configModel.getConfigs()
-        .then(configs => this.setState({
-            'configs': configs
-        }))
+
+        let configs, opened
+        configModel.getOpened()
+        .then(_opened => opened = _opened)
+        .then(() => configModel.getConfigs())
+        .then(_configs => configs = _configs)
+        .then(() => {
+            let currentConfig = {}
+            for (let i = 0, length = configs.length; i < length; ++i) {
+                if (configs[i].server === opened) {
+                    currentConfig = configs[i]
+                }
+            }
+
+            if (opened) { this.startConnect(currentConfig) }
+            this.setState({ configs, opened, currentConfig })
+        })
     }
     
     handleDrawerEvent = e => {
        switch(e.type) {
         case LIST_ITEM_CLICK:
-            this.changeHost(e.server)
+            this.switchHost(e.server)
             break
        }
     }
@@ -39,7 +53,7 @@ export default class extends Component {
         }
     }
 
-    changeHost(serverName) {
+    switchHost(serverName) {
         let configs = this.state.configs, config
         for (let i of configs) {
             if (i.server === serverName) {
@@ -47,11 +61,22 @@ export default class extends Component {
                 break
             }
         }
-        this.setState({ ...config })
+
+        // set default value
+        config = Object.assign({
+            local_addr: '127.0.0.1',
+            local_port: '1080',
+            server_port: '443',
+            remarks: 'unnamed',
+            method: 'aes-256-cfb',
+        }, config)
+
+        this.setState({ currentConfig: config })
     }
 
     stopConnect = () => {
         this.state.server.closeAll()
+        configModel.setOpened(null)
         this.setState({ opened: false })
     }
 
@@ -60,30 +85,36 @@ export default class extends Component {
             this.stopConnect()
         }
 
-        shadowsocks(config)
-        .then(server => {
-            this.setState({
-                opened: true,
-                ...config,
-                server
+        let server, configs
+        return shadowsocks(config)
+            .then(_server => server = _server)
+            .then(() => configModel.setOpened(config.server))
+            .then(() => configModel.updateConfig(config))
+            .catch(() => configModel.addConfig(config))
+            .then(() => configModel.getConfigs())
+            .then(configs => {
+                this.setState({ 
+                    opened: config.server,
+                    configs, server 
+                })
             })
-        })
-        .then(() => {
-            configModel.updateConfig(config)
-            this.setState({ configs: configModel.getConfigs() })
-        })
-        .catch(() => {
-            configModel.addConfig(config)
-            this.setState({ configs: configModel.getConfigs() })
-        })
+            .catch((e) => console.log(e))
     }
 
     render() {
         const configs = this.state.configs || []
         return (
             <div>
-                <MyAppBar configs={configs} onEvent={this.handleDrawerEvent} />
-                <SSForm  {...this.state} onEvent={this.handleSSFormEvent} />
+                <MyAppBar 
+                    opened={this.state.opened} 
+                    configs={configs} 
+                    onEvent={this.handleDrawerEvent} 
+                />
+                <SSForm  
+                    {...this.state.currentConfig} 
+                    opened={this.state.opened} 
+                    onEvent={this.handleSSFormEvent} 
+                />
             </div>
         )                
     }

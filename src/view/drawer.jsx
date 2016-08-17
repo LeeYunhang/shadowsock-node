@@ -12,7 +12,6 @@ import Help from 'material-ui/svg-icons/action/help';
 import { Link } from 'react-router'
 
 export const LIST_ITEM_CLICK = Symbol('list item click')
-//  rightIcon={value.selected? <Done color={pinkA200} /> : undefined}        
 class MyDrawer extends React.Component {
     constructor(props) {
         super(props)
@@ -23,12 +22,17 @@ class MyDrawer extends React.Component {
 
     configsToListItems = (configs) => {
         return this.listItems = configs.map((value, index) => {
+            let done
+            if(this.props.opened && this.props.opened === value.server) {
+                done = <Done />
+            }
             const listItem = <ListItem
                 key={index}
                 onTouchTap={this.props.onEvent.bind(this, {
                     server: value.server, 
                     type: LIST_ITEM_CLICK
                 })}
+                rightIcon={done}
                 primaryText={value.remarks || 'unnamed'}
                 secondaryText={value.server}
             />

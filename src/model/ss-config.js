@@ -2,7 +2,7 @@ import path from 'path'
 import fs from 'fs-promise'
 
 const configPath = path.join(__dirname, '../../config/gui-config.json')
-let _configs
+let _configs, opened
 
 export async function addConfig(config) {
     const fileContent = JSON.parse(await fs.readFile(configPath, {encoding: 'utf8'}))
@@ -42,6 +42,21 @@ export async function updateConfig(config) {
     if (!~index) { throw new Error('server isn\'t exist') }
     fileContent.configs[index] = Object.assign(fileContent.configs[index], config)
     _configs = fileContent.configs
+    await fs.writeFile(configPath, JSON.stringify(fileContent, null, 4))
+}
+
+/**
+ * get opened host
+ */
+export async function getOpened() {
+    if (opened) { return opened }
+    const fileContent = JSON.parse(await fs.readFile(configPath, {encoding: 'utf8'}))
+    return opened = fileContent.opened
+}
+
+export async function setOpened(serverName) {
+    const fileContent = JSON.parse(await fs.readFile(configPath, {encoding: 'utf8'}))
+    opened = fileContent.opened = serverName
     await fs.writeFile(configPath, JSON.stringify(fileContent, null, 4))
 }
 

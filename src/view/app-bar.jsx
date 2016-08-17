@@ -53,6 +53,7 @@ class AppBarExampleIcon extends React.Component {
                     open={this.state.open} 
                     onEvent={this.props.onEvent}
                     configs={this.props.configs}
+                    opened={this.props.opened}
                     handleDrawer={this.handleDrawer.bind(this)}
                 />
             </div>
