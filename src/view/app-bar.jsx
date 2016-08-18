@@ -10,6 +10,11 @@ import Divider from 'material-ui/Divider'
 
 import MyDrawer from './drawer'
 
+export const ADD_HOST = Symbol('add host')
+export const DELETE_HOST = Symbol('delete host')
+export const IMPORT_CONFIG = Symbol('import config')
+export const OUTPUT_CONFIG = Symbol('output config')
+
 class AppBarExampleIcon extends React.Component {
 
     constructor(props) {
@@ -38,13 +43,13 @@ class AppBarExampleIcon extends React.Component {
                         anchorOrigin={{horizontal: 'right', vertical: 'top'}}
                     >
                         <List>
-                            <MenuItem  primaryText="Add" />
-                            <MenuItem  primaryText="Delete" />
+                            <MenuItem onClick={() => this.props.onEvent({ type: ADD_HOST })}  primaryText="Add" />
+                            <MenuItem onClick={() => this.props.onEvent({ type: DELETE_HOST })} primaryText="Delete" />
                         </List>
                         <Divider />   
                         <List>
-                            <MenuItem  primaryText="Import" />
-                            <MenuItem primaryText="Output" />
+                            <MenuItem onClick={() => this.props.onEvent({ type: IMPORT_CONFIG })}  primaryText="Import" />
+                            <MenuItem onClick={() => this.props.onEvent({ type: OUTPUT_CONFIG })} primaryText="Output" />
                         </List>
                     </IconMenu>
                     }                    

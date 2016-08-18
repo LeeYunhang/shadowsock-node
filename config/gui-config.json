@@ -6,7 +6,6 @@
             "password": "62910666",
             "method": "aes-256-cfb",
             "remarks": "曹云轩",
-            "selected": true,
             "local_addr": "127.0.0.1",
             "local_port": "1080"
         },
@@ -24,5 +23,5 @@
     "pacUrl": null,
     "useOnlinePac": false,
     "availabilityStatistics": false,
-    "opened": "76.164.224.102"
+    "opened": null
 }

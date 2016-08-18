@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 
 import MyAppBar from './app-bar'
+import { IMPORT_CONFIG, OUTPUT_CONFIG, ADD_HOST, DELETE_HOST } from './app-bar'
 import SSForm, { START_CONNECT, CLOSE_CONNECT, INPUT_TEXT_CHANGE } from './ss-form'
 import shadowsocks, { server } from '../controller/shadowsocks'
 import * as configModel from '../model/ss-config' 
@@ -34,10 +35,20 @@ export default class extends Component {
         })
     }
     
-    handleDrawerEvent = e => {
+    handleAppbarEvent = e => {
        switch(e.type) {
         case LIST_ITEM_CLICK:
             this.switchHost(e.server)
+            break
+        case ADD_HOST:
+            this.setState({ currentConfig: {} })
+            break
+        case DELETE_HOST:
+            this.deleteHost(e.serverName)
+            break
+        case IMPORT_CONFIG:
+            break
+        case OUTPUT_CONFIG:
             break
        }
     }
@@ -51,6 +62,11 @@ export default class extends Component {
             this.stopConnect()
             break
         }
+    }
+
+    deleteHost(serverName) {
+        configModel.removeConfig(serverName)
+        .then(() => this.stopConnect())
     }
 
     switchHost(serverName) {
@@ -108,7 +124,7 @@ export default class extends Component {
                 <MyAppBar 
                     opened={this.state.opened} 
                     configs={configs} 
-                    onEvent={this.handleDrawerEvent} 
+                    onEvent={this.handleAppbarEvent} 
                 />
                 <SSForm  
                     {...this.state.currentConfig} 

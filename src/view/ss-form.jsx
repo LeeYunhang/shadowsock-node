@@ -56,7 +56,6 @@ export default class extends Component {
     }
 
     handleTextFieldChange = (e) => {
-        e.preventDefault()
         if (!this.props.opened) {
             this.setState({ [e.target.id]: e.target.value })
         }
@@ -74,21 +73,23 @@ export default class extends Component {
     }
 
     receiveProps = props => {
-        this.state.remarks = props.remarks
-        this.state.serverName = props.server
-        this.state.serverPort = props.server_port
-        this.state.password = props.password
-        this.state.localName = props.local_addr
-        this.state.localPort = props.local_port
-        this.state.method = props.method
+        const tmp = this.state.serverName
+        const { remarks, server, server_port, password, local_addr, local_port, method} = props
+        this.setState({
+            remarks, password, method,
+            serverName: server,
+            serverPort: server_port,
+            localName: local_addr,
+            localPort: local_port,
+        })
     }
 
-d
     render() {
-        const icon = this.props.opened? (<Done />) : (<Send />)
         this.receiveProps(this.props)
+        const icon = this.props.opened? (<Done />) : (<Send />)
         const open = this.state.open || false
         const method = this.state.method
+
         return (
             <div>
                 <Paper style={styles.paper} zDepth={1} rounded={false}>
