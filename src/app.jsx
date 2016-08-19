@@ -10,6 +10,8 @@ import Settings from './bin/view/settings'
 import PublicHost from './bin/view/public-host'
 import Feedback from './bin/view/feedback'
 import Help from './bin/view/help'
+import Output from './bin/view/output'
+import Import from './bin/view/import'
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -25,6 +27,8 @@ const App = () => (
                 <Route path="/public-host" component={PublicHost}></Route>
                 <Route path="/feedback" component={Feedback}></Route>
                 <Route path="/help" component={Help}></Route>
+                <Route path="/output" component={Output}></Route>
+                <Route path="/import" component={Import}></Route>
             </Route>
         </Router>
     </MuiThemeProvider>

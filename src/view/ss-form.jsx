@@ -74,14 +74,15 @@ export default class extends Component {
 
     receiveProps = props => {
         const tmp = this.state.serverName
-        const { remarks, server, server_port, password, local_addr, local_port, method} = props
-        this.setState({
-            remarks, password, method,
-            serverName: server,
-            serverPort: server_port,
-            localName: local_addr,
-            localPort: local_port,
-        })
+        const { remarks, server, server_port, password, local_addr, local_port, method } = props
+    
+        this.state.remarks = remarks
+        this.state.serverName = server
+        this.state.serverPort = server_port
+        this.state.localName = local_addr
+        this.state.localPort = local_port
+        this.state.password = password
+        this.state.method = method
     }
 
     render() {

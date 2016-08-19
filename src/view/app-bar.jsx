@@ -7,6 +7,7 @@ import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import {List, ListItem} from 'material-ui/List'
 import Divider from 'material-ui/Divider'
+import { Link } from 'react-router'
 
 import MyDrawer from './drawer'
 
@@ -48,8 +49,8 @@ class AppBarExampleIcon extends React.Component {
                         </List>
                         <Divider />   
                         <List>
-                            <MenuItem onClick={() => this.props.onEvent({ type: IMPORT_CONFIG })}  primaryText="Import" />
-                            <MenuItem onClick={() => this.props.onEvent({ type: OUTPUT_CONFIG })} primaryText="Output" />
+                            <MenuItem containerElement={<Link to={{pathname: '/import'}} />}  primaryText="Import" />
+                            <MenuItem containerElement={<Link to={{pathname: '/output'}} />} primaryText="Output" />
                         </List>
                     </IconMenu>
                     }                    
