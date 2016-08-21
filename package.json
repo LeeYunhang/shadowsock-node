@@ -15,6 +15,7 @@
     "debounce": "^1.0.0",
     "fs-promise": "^0.5.0",
     "material-ui": "^0.15.3",
+    "qrcode-reader": "^0.2.1",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
     "react-redux": "^4.4.5",

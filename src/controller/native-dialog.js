@@ -1,5 +1,5 @@
-const { dialog } = require('electron')
-
+import { remote } from 'electron'
+const dialog = remote.dialog
 /**
  * async
  * 

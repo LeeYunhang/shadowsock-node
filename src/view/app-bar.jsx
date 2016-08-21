@@ -38,11 +38,10 @@ class AppBarExampleIcon extends React.Component {
                     <IconMenu
                         width="150px"
                         iconButtonElement={
-                        <IconButton><MoreVertIcon /></IconButton>
+                            <IconButton><MoreVertIcon /></IconButton>
                         }
                         targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-                    >
+                        anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
                         <List>
                             <MenuItem onClick={() => this.props.onEvent({ type: ADD_HOST })}  primaryText="Add" />
                             <MenuItem onClick={() => this.props.onEvent({ type: DELETE_HOST })} primaryText="Delete" />

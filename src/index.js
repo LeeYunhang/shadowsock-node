@@ -1,4 +1,4 @@
-const {app, BrowserWindow, globalShortcut} = require('electron')
+import { app, BrowserWindow, globalShortcut } from 'electron'
 import path from 'path'
 import debounce from 'debounce'
 
@@ -9,12 +9,11 @@ let win
 function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({width: 433, height: 461})
-
   // and load the index.html of the app.
   win.loadURL(`file://${path.join(__dirname, '..')}/index.html`)
 
   //disable change the size of window
-  win.setResizable(false)
+  // win.setResizable(false)
 
   // Emitted when the window is closed.
   win.on('closed', () => {

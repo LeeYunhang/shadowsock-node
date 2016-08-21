@@ -5,10 +5,14 @@ import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import { hashHistory } from 'react-router'
 import Paper from 'material-ui/Paper';
 import Add from 'material-ui/svg-icons/content/add'
+import Done from 'material-ui/svg-icons/action/done'
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import { pinkA200, transparent, grey400 } from 'material-ui/styles/colors';
+import FlatButton from 'material-ui/FlatButton';
+import fs from 'fs-promise'
 
-import nativeDialog from '../controller/native-dialog'
+import { openFileDialog } from '../controller/native-dialog'
+import { parseQrCode } from '../controller/qr-code'
 
 export default class extends Component {
 
@@ -17,23 +21,29 @@ export default class extends Component {
     }
 
     openFileDialog = () => {
-        nativeDialog.openFileDialog({
+        openFileDialog({
             title: 'Select QRcode image or json file',
             filters: [
-                { name: 'Images', extensions: ['jpg, png'] },
+                { name: 'Images', extensions: ['png', 'jpg'] },
                 { name: 'Text', extensions: ['txt', 'json'] }
             ]
         }).then(filenames => {
-            filenames.forEach(filename => {
+            const promises = filenames.map((filename, idnex) => {
                 const filetype = filename.substring(filename.indexOf('.') + 1, filename.length)
                 
                 if (filetype === 'jpg' || filetype === 'png') {
-                    // TODO: parse QR code
+                    return  parseQrCode(filename)
                 } else {
-                    // TODO: parse text file
+                    return Promise.resolve()
                 }
             })
-        }).catch(() => {
+
+            return promises[0]
+            // return Promise.all(...promises)
+        }).then(configs => {
+            console.log(configs);
+        }).catch((e) => {
+            console.log(e);
             // TODO: exception handle
         })
     }
@@ -44,16 +54,22 @@ export default class extends Component {
             <div>
                 <AppBar
                     title={<span>Import</span>}
-                    iconElementLeft={<IconButton onClick={this.HandleClose}><NavigationClose /></IconButton>}
+                    iconElementLeft={
+                        <IconButton onClick={this.HandleClose}>
+                            <NavigationClose />
+                        </IconButton>
+                    }
                 />            
                 <Paper style={styles.paper} zDepth={1} rounded={false}>
                     <p style={styles.tip}>drag and drop QRcode or JSON here</p>
                     <Add style={styles.add} color={grey400} />
-                    <FloatingActionButton
-                        onTouchTap={this.openFileDialog}
-                        style={styles.floatingButton}
-                    >
-                    <Add />        
+                    <FlatButton 
+                        onTouchTap={this.openFileDialog} 
+                        style={styles.openFile} 
+                        label="Open file" 
+                    />
+                    <FloatingActionButton disenable style={styles.floatingButton}>
+                    <Done />        
                     </FloatingActionButton>
                 </Paper>
             </div>
@@ -84,4 +100,8 @@ const styles = {
       bottom: '0',
       right: '0',
   },
+  openFile: {
+      display: 'block',
+      margin: 'auto'
+  }
 }
