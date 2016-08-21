@@ -42,15 +42,12 @@ class AppBarExampleIcon extends React.Component {
                         }
                         targetOrigin={{horizontal: 'right', vertical: 'top'}}
                         anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
-                        <List>
-                            <MenuItem onClick={() => this.props.onEvent({ type: ADD_HOST })}  primaryText="Add" />
-                            <MenuItem onClick={() => this.props.onEvent({ type: DELETE_HOST })} primaryText="Delete" />
-                        </List>
+
+                        <MenuItem onClick={() => this.props.onEvent({ type: ADD_HOST })}  primaryText="Add" />
+                        <MenuItem onClick={() => this.props.onEvent({ type: DELETE_HOST })} primaryText="Delete" />
                         <Divider />   
-                        <List>
-                            <MenuItem containerElement={<Link to={{pathname: '/import'}} />}  primaryText="Import" />
-                            <MenuItem containerElement={<Link to={{pathname: '/output'}} />} primaryText="Output" />
-                        </List>
+                        <MenuItem containerElement={<Link to={{pathname: '/import'}} />}  primaryText="Import" />
+                        <MenuItem containerElement={<Link to={{pathname: '/output'}} />} primaryText="Output" />
                     </IconMenu>
                     }                    
                 />

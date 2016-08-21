@@ -43,3 +43,5 @@ bin
 #vscode
 jsconfig.json
 .vscode/
+
+local resources/

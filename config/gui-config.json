@@ -10,7 +10,8 @@
             "local_port": "1080"
         },
         {
-            "server": "crazyforcode.org"
+            "server": "crazyforcode.org",
+            "password": "62910666"
         }
     ],
     "strategy": null,

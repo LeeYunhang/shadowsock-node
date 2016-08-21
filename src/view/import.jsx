@@ -12,7 +12,7 @@ import FlatButton from 'material-ui/FlatButton';
 import fs from 'fs-promise'
 
 import { openFileDialog } from '../controller/native-dialog'
-import { parseQrCode } from '../controller/qr-code'
+import { parseConfigsByFilename } from '../controller/parse-configs'
 
 export default class extends Component {
 
@@ -24,22 +24,12 @@ export default class extends Component {
         openFileDialog({
             title: 'Select QRcode image or json file',
             filters: [
-                { name: 'Images', extensions: ['png', 'jpg'] },
-                { name: 'Text', extensions: ['txt', 'json'] }
+                { name: 'Text', extensions: ['txt', 'json'] },
+                { name: 'Images', extensions: ['png', 'jpg'] }
             ]
         }).then(filenames => {
-            const promises = filenames.map((filename, idnex) => {
-                const filetype = filename.substring(filename.indexOf('.') + 1, filename.length)
-                
-                if (filetype === 'jpg' || filetype === 'png') {
-                    return  parseQrCode(filename)
-                } else {
-                    return Promise.resolve()
-                }
-            })
-
+            const promises = filenames.map(parseConfigsByFilename)
             return promises[0]
-            // return Promise.all(...promises)
         }).then(configs => {
             console.log(configs);
         }).catch((e) => {
@@ -68,7 +58,7 @@ export default class extends Component {
                         style={styles.openFile} 
                         label="Open file" 
                     />
-                    <FloatingActionButton disenable style={styles.floatingButton}>
+                    <FloatingActionButton style={styles.floatingButton}>
                     <Done />        
                     </FloatingActionButton>
                 </Paper>
@@ -76,6 +66,7 @@ export default class extends Component {
         )
     }
 }
+
 const styles = {
   paper: {
     display: 'block',

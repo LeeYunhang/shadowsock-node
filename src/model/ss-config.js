@@ -35,6 +35,20 @@ export async function getConfigs() {
     return _configs
 }
 
+/**
+ * return {boolean} is exist?
+ */
+export async function configIsExist(config) {
+    const configs = await getConfigs()
+    
+    for (let i = 0, length = configs.length; i < length; ++i) {
+        if (configs[i].server === config.server) {
+            throw new Error(`server {$config.server} is exist!`)
+        }
+    }
+    return config
+}
+
 export async function updateConfig(config) {
     const fileContent = JSON.parse(await fs.readFile(configPath, {encoding: 'utf8'}))
     const index = fileContent.configs.findIndex(e => e.server === config.server)

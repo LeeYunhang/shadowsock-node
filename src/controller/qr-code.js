@@ -1,22 +1,13 @@
-import QrCode from 'qrcode-reader'
+import qr from 'node-zxing'
 
-export function parseQrCode(filename) {
+const qrdecoder = qr({})
+
+export function parseQrCode(filename) { 
     return new Promise((resolve, reject) => {
-        const qr = new QrCode()
-        qr.callback = (result, err) => {
-            if (err) { 
-                reject(err)
-                return
-            }
-
-            if (result) {
-                resolve(result)
-            } else {
-                reject(err)
-            }
-        }
-
-        filename = 'file:/' + filename
-        qr.decode(filename)
+        qrdecoder.decode(filename, (err ,result) => {
+            if (err) { reject(err) }
+            resolve(result)
+            console.log(result);
+        })
     })
 }
