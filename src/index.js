@@ -13,8 +13,8 @@ function createWindow () {
   win.loadURL(`file://${path.join(__dirname, '..')}/index.html`)
 
   //disable change the size of window
-  // win.setResizable(false)
-
+  win.setResizable(false)
+  win.title = 'Shadowsocks'
   // Emitted when the window is closed.
   win.on('closed', () => {
     // Dereference the window object, usually you would store windows

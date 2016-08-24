@@ -24,14 +24,19 @@ class MyDrawer extends React.Component {
         return this.listItems = configs.map((value, index) => {
             let done
             if(this.props.opened && this.props.opened === value.server) {
-                done = <Done />
+                done = <Done color={pinkA200}/>
             }
             const listItem = <ListItem
                 key={index}
                 onTouchTap={this.props.onEvent.bind(this, {
-                    server: value.server, 
-                    type: LIST_ITEM_CLICK
                 })}
+                onTouchTap={() => {
+                    this.props.onEvent({
+                        server: value.server, 
+                        type: LIST_ITEM_CLICK
+                    })
+                    this.props.handleDrawer()
+                }}
                 rightIcon={done}
                 primaryText={value.remarks || 'unnamed'}
                 secondaryText={value.server}

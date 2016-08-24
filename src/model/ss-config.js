@@ -77,6 +77,6 @@ export async function getOpened() {
 export async function setOpened(serverName) {
     const fileContent = JSON.parse(await fs.readFile(configPath, {encoding: 'utf8'}))
     opened = fileContent.opened = serverName
-    await fs.writeFile(configPath, JSON.stringify(fileContent, null, 4))
+    return await fs.writeFile(configPath, JSON.stringify(fileContent, null, 4))
 }
 

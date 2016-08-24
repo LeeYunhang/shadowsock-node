@@ -8,6 +8,7 @@ import * as configModel from '../model/ss-config'
 import { getConfigs } from '../model/ss-config' 
 import appState from '../model/app-state'
 import { LIST_ITEM_CLICK } from './drawer'
+// import appState from '../model/app-state'
 
 export default class extends Component {
 
@@ -34,7 +35,7 @@ export default class extends Component {
 
             if (opened) { this.startConnect(currentConfig) }
             this.setState({ configs, opened, currentConfig })
-        })
+        }).catch((e) => console.log(e))
     }
     
     handleAppbarEvent = e => {
@@ -67,8 +68,35 @@ export default class extends Component {
     }
 
     deleteHost(serverName) {
-        configModel.removeConfig(serverName)
-        .then(() => this.stopConnect())
+        configModel.removeConfig(serverName).then(() => {
+            if (serverName && serverName === this.state.opened) {
+                this.state.server.closeAll()
+                return Promise.all([
+                    configModel.getConfigs(), 
+                    configModel.setOpened(null)    
+                ])
+            }
+            return configModel.getConfigs()
+        }).then((args) => {
+            let tmp
+
+            if (Array.isArray(args[0])) {
+                tmp = {
+                    server: null,
+                    configs: args[0],
+                    opened: null,
+                    currentConfig: {},
+                }
+            } else {
+                tmp = { 
+                    configs: args, 
+                    currentConfig: {} 
+                }
+            }
+
+            this.setState(tmp)
+            appState.emit('currentConfig', null)
+        }).catch(e => console.log(e))
     }
 
     switchHost(serverName) {
@@ -117,7 +145,8 @@ export default class extends Component {
             .then(configs => {
                 this.setState({ 
                     opened: config.server,
-                    configs, server 
+                    configs, server,
+                    currentConfig: Object.assign({}, config)
                 })
             })
             .catch((e) => console.log(e))
@@ -129,7 +158,8 @@ export default class extends Component {
             <div>
                 <MyAppBar 
                     opened={this.state.opened}
-                    configs={configs} 
+                    configs={configs}
+                    config={this.state.currentConfig}
                     onEvent={this.handleAppbarEvent} 
                 />
                 <SSForm  

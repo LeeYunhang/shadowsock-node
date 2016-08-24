@@ -9,6 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Done from 'material-ui/svg-icons/action/done';
 
 import EncryptSelector from './encrypt-method-selector'
+import appState from '../model/app-state'
 
 export const START_CONNECT = Symbol('start connect')
 export const CLOSE_CONNECT = Symbol('close connect')
@@ -20,10 +21,6 @@ export default class extends Component {
 
         this.state = { 
             open: false,
-            method: 'aes-256-cfb',
-            password: '62910666',
-            serverName: '76.164.224.102',
-            serverPort: 36796,
         }
     }
 
@@ -76,18 +73,23 @@ export default class extends Component {
         const tmp = this.state.serverName
         const { remarks, server, server_port, password, local_addr, local_port, method } = props
     
-        this.state.remarks = remarks
-        this.state.serverName = server
-        this.state.serverPort = server_port
-        this.state.localName = local_addr
-        this.state.localPort = local_port
-        this.state.password = password
-        this.state.method = method
+        this.state.remarks = remarks || ''
+        this.state.serverName = server || ''
+        this.state.serverPort = server_port || ''
+        this.state.localName = local_addr || ''
+        this.state.localPort = local_port || ''
+        this.state.password = password || ''
+        this.state.method = method || ''
+    }
+
+    componentWillReceiveProps(props) {
+        this.receiveProps(props)
     }
 
     render() {
-        this.receiveProps(this.props)
-        const icon = this.props.opened? (<Done />) : (<Send />)
+        const opened = this.props.opened
+        const serverName = this.props.server
+        const icon = (opened && serverName === opened)? (<Done />) : (<Send />)
         const open = this.state.open || false
         const method = this.state.method
 

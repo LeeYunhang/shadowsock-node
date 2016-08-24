@@ -32,7 +32,7 @@ class AppBarExampleIcon extends React.Component {
         return (
             <div>
                 <AppBar
-                    title="Shadowsocks-Node"
+                    title="Shadowsocks"
                     onLeftIconButtonTouchTap={this.handleDrawer.bind(this)}
                     iconElementRight={
                     <IconMenu
@@ -44,7 +44,12 @@ class AppBarExampleIcon extends React.Component {
                         anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
 
                         <MenuItem onClick={() => this.props.onEvent({ type: ADD_HOST })}  primaryText="Add" />
-                        <MenuItem onClick={() => this.props.onEvent({ type: DELETE_HOST })} primaryText="Delete" />
+                        <MenuItem 
+                            onClick={() => this.props.onEvent({ 
+                                type: DELETE_HOST, 
+                                serverName: this.props.config.server
+                            })} 
+                            primaryText="Delete" />
                         <Divider />   
                         <MenuItem containerElement={<Link to={{pathname: '/import'}} />}  primaryText="Import" />
                         <MenuItem containerElement={<Link to={{pathname: '/output'}} />} primaryText="Output" />

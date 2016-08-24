@@ -39,7 +39,7 @@ export default class extends Component {
             ]
         }).then(filenames => {
             const promises = filenames.map(parseConfigsByFilename)
-            return promises[0]
+            return Promise.all(promises)
         }).then(configs => {
             this.setState({ importConfigs: configs })
         }).catch((e) => {

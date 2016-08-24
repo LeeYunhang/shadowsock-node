@@ -8,7 +8,6 @@ export function parseQrCode(filename) {
         qrdecoder.decode(filename, (err ,result) => {
             if (err) { reject(err) }
             resolve(result)
-            console.log(result);
         })
     })
 }

@@ -1,7 +1,3 @@
-import qr from 'qr-image'
-import fs from 'fs'
-
-const code = qr.image('hello world', { type: 'png' })
-const output = fs.createWriteStream('test.png')
-
-code.pipe(output)
+Promise.all([Promise.resolve(123), Promise.resolve(456)]).then((args) => {
+    console.log(args.length);
+})

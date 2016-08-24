@@ -8,10 +8,6 @@
             "remarks": "曹云轩",
             "local_addr": "127.0.0.1",
             "local_port": "1080"
-        },
-        {
-            "server": "crazyforcode.org",
-            "password": "62910666"
         }
     ],
     "strategy": null,
@@ -24,5 +20,5 @@
     "pacUrl": null,
     "useOnlinePac": false,
     "availabilityStatistics": false,
-    "opened": "76.164.224.102"
+    "opened": null
 }
