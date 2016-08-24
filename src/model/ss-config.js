@@ -6,13 +6,19 @@ let _configs, opened
 
 export async function addConfig(config) {
     const fileContent = JSON.parse(await fs.readFile(configPath, {encoding: 'utf8'}))
-    const repeat = fileContent.configs.some(e => config.server === e.server)
-    
-    if (repeat) { throw new Error('Duplicate name') }
+    await configIsExist(config)
 
     fileContent.configs.push(config)
     _configs = fileContent.configs
 
+    await fs.writeFile(configPath, JSON.stringify(fileContent, null, 4))
+}
+
+export async function addConfigs(configs) {
+    await Promise.all(...configs.map(configIsExist))
+    const fileContent = JSON.parse(await fs.readFile(configPath, {encoding: 'utf8'}))
+
+    fileContent.configs.push(...configs)
     await fs.writeFile(configPath, JSON.stringify(fileContent, null, 4))
 }
 
@@ -36,7 +42,7 @@ export async function getConfigs() {
 }
 
 /**
- * return {boolean} is exist?
+ * return {boolean} is config exist?
  */
 export async function configIsExist(config) {
     const configs = await getConfigs()

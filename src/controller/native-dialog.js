@@ -1,5 +1,6 @@
 import { remote } from 'electron'
 const dialog = remote.dialog
+
 /**
  * async
  * 
@@ -17,3 +18,16 @@ export function openFileDialog(options) {
         })
     })
 }
+
+export function saveFileDialog(defaultPath = './ss.png') {
+    return new Promise((resolve, reject) => {
+        dialog.showSaveDialog({ defaultPath },filename => {
+            if (!filename) { 
+                reject('must select file')
+                return
+            }
+
+            resolve(filename)
+        })
+    })
+}     

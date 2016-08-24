@@ -1,6 +1,7 @@
-import qr from 'node-zxing'
+// import qr from 'node-zxing'
+import qr from 'qr-image'
 
-const qrdecoder = qr({})
+// const qrdecoder = qr({})
 
 export function parseQrCode(filename) { 
     return new Promise((resolve, reject) => {
@@ -10,4 +11,8 @@ export function parseQrCode(filename) {
             console.log(result);
         })
     })
+}
+
+export function generateQrCode(text) {
+    return qr.image(text, { type: 'png' })
 }

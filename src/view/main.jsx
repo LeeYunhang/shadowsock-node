@@ -5,6 +5,8 @@ import { IMPORT_CONFIG, OUTPUT_CONFIG, ADD_HOST, DELETE_HOST } from './app-bar'
 import SSForm, { START_CONNECT, CLOSE_CONNECT, INPUT_TEXT_CHANGE } from './ss-form'
 import shadowsocks, { server } from '../controller/shadowsocks'
 import * as configModel from '../model/ss-config' 
+import { getConfigs } from '../model/ss-config' 
+import appState from '../model/app-state'
 import { LIST_ITEM_CLICK } from './drawer'
 
 export default class extends Component {
@@ -94,6 +96,7 @@ export default class extends Component {
         this.state.server.closeAll()
         configModel.setOpened(null)
         this.setState({ opened: false })
+        appState.emit('currentConfig', null)
     }
 
     startConnect = (config) => {
@@ -103,7 +106,10 @@ export default class extends Component {
 
         let server, configs
         return shadowsocks(config)
-            .then(_server => server = _server)
+            .then(_server => {
+                server = _server
+                appState.emit('currentConfig', config)
+            })
             .then(() => configModel.setOpened(config.server))
             .then(() => configModel.updateConfig(config))
             .catch(() => configModel.addConfig(config))
@@ -122,7 +128,7 @@ export default class extends Component {
         return (
             <div>
                 <MyAppBar 
-                    opened={this.state.opened} 
+                    opened={this.state.opened}
                     configs={configs} 
                     onEvent={this.handleAppbarEvent} 
                 />

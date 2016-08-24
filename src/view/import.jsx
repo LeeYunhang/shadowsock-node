@@ -16,9 +16,19 @@ import { parseConfigsByFilename } from '../controller/parse-configs'
 
 export default class extends Component {
 
+    constructor(props) {
+        super(props)
+        this.state = {}
+    }
     HandleClose() {
         hashHistory.goBack()
     }
+
+    saveImportConfigs = () => {
+        
+    }
+
+
 
     openFileDialog = () => {
         openFileDialog({
@@ -31,14 +41,16 @@ export default class extends Component {
             const promises = filenames.map(parseConfigsByFilename)
             return promises[0]
         }).then(configs => {
-            console.log(configs);
+            this.setState({ importConfigs: configs })
         }).catch((e) => {
-            console.log(e);
-            // TODO: exception handle
+            // TODO: handle exception
+            this.setState({ importConfigs: null })
         })
     }
 
     render() {
+        const disabled = !!!this.state.importConfigs
+
         return (
 
             <div>
@@ -58,7 +70,10 @@ export default class extends Component {
                         style={styles.openFile} 
                         label="Open file" 
                     />
-                    <FloatingActionButton style={styles.floatingButton}>
+                    <FloatingActionButton 
+                        onTouchTap={this.saveImportConfigs}
+                        disabled={disabled} 
+                        style={styles.floatingButton}>
                     <Done />        
                     </FloatingActionButton>
                 </Paper>
