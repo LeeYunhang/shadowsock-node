@@ -8,7 +8,6 @@ import * as configModel from '../model/ss-config'
 import { getConfigs } from '../model/ss-config' 
 import appState from '../model/app-state'
 import { LIST_ITEM_CLICK } from './drawer'
-// import appState from '../model/app-state'
 
 export default class extends Component {
 
@@ -33,7 +32,10 @@ export default class extends Component {
                 }
             }
 
-            if (opened) { this.startConnect(currentConfig) }
+            if (opened) { 
+                this.startConnect(currentConfig) 
+                appState.emit('currentConfig', currentConfig)
+            }
             this.setState({ configs, opened, currentConfig })
         }).catch((e) => console.log(e))
     }
@@ -118,13 +120,13 @@ export default class extends Component {
         }, config)
 
         this.setState({ currentConfig: config })
+        appState.emit('currentConfig', config)
     }
 
     stopConnect = () => {
         this.state.server.closeAll()
         configModel.setOpened(null)
         this.setState({ opened: false })
-        appState.emit('currentConfig', null)
     }
 
     startConnect = (config) => {
@@ -136,7 +138,6 @@ export default class extends Component {
         return shadowsocks(config)
             .then(_server => {
                 server = _server
-                appState.emit('currentConfig', config)
             })
             .then(() => configModel.setOpened(config.server))
             .then(() => configModel.updateConfig(config))

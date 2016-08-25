@@ -80,3 +80,12 @@ export async function setOpened(serverName) {
     return await fs.writeFile(configPath, JSON.stringify(fileContent, null, 4))
 }
 
+export async function setPacMode(value) {
+    const fileContent = JSON.parse(await fs.readFile(configPath, {encoding: 'utf8'}))
+    fileContent.global = value
+    return await fs.writeFile(configPath, JSON.stringify(fileContent, null, 4))
+}
+
+export async function getPacMode() {
+    return JSON.parse(await fs.readFile(configPath, {encoding: 'utf8'})).global
+}

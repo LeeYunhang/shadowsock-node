@@ -8,7 +8,11 @@ let win
 
 function createWindow () {
   // Create the browser window.
-  win = new BrowserWindow({width: 433, height: 461})
+  win = new BrowserWindow({ 
+    width: 433, 
+    height: 461,
+    icon: `file://${path.join(__dirname, '..')}/img/shadowsocks.ico`
+  })
   // and load the index.html of the app.
   win.loadURL(`file://${path.join(__dirname, '..')}/index.html`)
 
