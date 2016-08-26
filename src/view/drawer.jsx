@@ -10,6 +10,7 @@ import Settings from 'material-ui/svg-icons/action/settings';
 import Done from 'material-ui/svg-icons/action/done';
 import Help from 'material-ui/svg-icons/action/help';
 import { Link } from 'react-router'
+import { shell } from 'electron'
 
 export const LIST_ITEM_CLICK = Symbol('list item click')
 class MyDrawer extends React.Component {
@@ -45,6 +46,10 @@ class MyDrawer extends React.Component {
         })
     }
 
+    handFeedback() {
+        shell.openExternal('https://github.com/mrcodehang/shadowsock-node/issues')
+    }
+
     render() {
         const listItems = this.configsToListItems(this.props.configs)
         
@@ -59,7 +64,7 @@ class MyDrawer extends React.Component {
                 <List>
                     <ListItem primaryText="Public host" leftIcon={<ContentSend />} containerElement={<Link to={{pathname:"/public-host"}} />} />
                     <ListItem primaryText="Settings" leftIcon={<Settings />} containerElement={<Link to={{pathname:"/settings"}} />} />
-                    <ListItem primaryText="Send feedback" leftIcon={<FeedBack />} containerElement={<Link to={{pathname:"/feedback"}} />} />
+                    <ListItem primaryText="Send feedback" leftIcon={<FeedBack />} onTouchTap={this.handFeedback} />
                     <ListItem primaryText="Help" leftIcon={<Help />} containerElement={<Link to={{pathname:"/help"}} />} />
                 </List>   
             </Drawer>

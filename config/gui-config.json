@@ -8,26 +8,8 @@
             "remarks": "曹云轩",
             "local_addr": "127.0.0.1",
             "local_port": "1080"
-        },
-        {
-            "server": "crazyforcode.org",
-            "server_port": "12312",
-            "password": "2131231231",
-            "method": "",
-            "remarks": "crazyforcode.org",
-            "local_addr": "213123123",
-            "local_port": "123"
         }
     ],
-    "strategy": null,
-    "index": 1,
     "global": "pac",
-    "enabled": true,
-    "shareOverLan": false,
-    "isDefault": false,
-    "localPort": 1081,
-    "pacUrl": null,
-    "useOnlinePac": false,
-    "availabilityStatistics": false,
     "opened": null
 }
