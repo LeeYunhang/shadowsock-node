@@ -1,15 +1,5 @@
 {
-    "configs": [
-        {
-            "server": "76.164.224.102",
-            "server_port": 36796,
-            "password": "62910666",
-            "method": "aes-256-cfb",
-            "remarks": "曹云轩",
-            "local_addr": "127.0.0.1",
-            "local_port": "1080"
-        }
-    ],
+    "configs": [],
     "global": "pac",
     "opened": null
 }

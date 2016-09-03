@@ -11,7 +11,11 @@ export function parseConfigsByFilename(filename) {
         } else {
             return fs.readFile(filename, { encoding: 'utf8' })
         }
-    }).then(configsJSON => {
+    }).then(parseConfigsByJSON)
+}
+
+export function parseConfigsByJSON(configsJSON) {
+    return new Promise((resolve, reject) => {
         const configs = JSON.parse(configsJSON)
         
         // a entire configuration file
@@ -23,17 +27,17 @@ export function parseConfigsByFilename(filename) {
                 }
             })
 
-            return tmp
+            return resolve(tmp)
         } else {     // a single object
             if (!configs.server || !configs.password) {
                 throw new Error('server or password is null')
             }
-            return configs
-        }
+            return resolve(configs)
+        }        
     }).then(configs => {
         if (Array.isArray(configs)) {
             return Promise.all(configs.map(configIsExist))
         }
-        return configIsExist(configs)
+        return configIsExist(configs)        
     })
 }

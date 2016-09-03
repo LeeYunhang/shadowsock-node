@@ -1,17 +1,17 @@
-import { app, BrowserWindow, globalShortcut } from 'electron'
+import { app, BrowserWindow, globalShortcut, Tray, Menu } from 'electron'
 import path from 'path'
 import debounce from 'debounce'
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win
-
+let win, isopen = true
+const icoPath = path.join(__dirname, '../img', 'ss.png')
 function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({ 
     width: 433, 
     height: 461,
-    icon: `file://${path.join(__dirname, '..')}/img/shadowsocks.ico`
+    icon: icoPath
   })
   // and load the index.html of the app.
   win.loadURL(`file://${path.join(__dirname, '..')}/index.html`)
@@ -19,6 +19,32 @@ function createWindow () {
   //disable change the size of window
   win.setResizable(false)
   win.title = 'Shadowsocks'
+
+  const tray = new Tray(icoPath)
+  tray.setToolTip('Shadowsocks')
+  const contextMenu = Menu.buildFromTemplate([
+      {
+        label: 'Minimise',
+        click() {
+          if (isopen) {
+            win.hide()
+            contextMenu.items[0].label = 'Restore'
+          } else {
+            win.show()
+            contextMenu.items[0].label = 'Minimise'
+          }
+          isopen = !isopen
+        }
+    },
+    {
+      label: 'Quit',
+      click() {
+        isopen = true
+        app.quit()
+      }
+    }
+  ])
+  tray.setContextMenu(contextMenu)
   // Emitted when the window is closed.
   win.on('closed', () => {
     // Dereference the window object, usually you would store windows

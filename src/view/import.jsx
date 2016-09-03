@@ -7,28 +7,71 @@ import Paper from 'material-ui/Paper';
 import Add from 'material-ui/svg-icons/content/add'
 import Done from 'material-ui/svg-icons/action/done'
 import FloatingActionButton from 'material-ui/FloatingActionButton';
-import { pinkA200, transparent, grey400 } from 'material-ui/styles/colors';
+import { pinkA200, transparent, grey400, green400, red900, blue400 } from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
 import fs from 'fs-promise'
 
 import { openFileDialog } from '../controller/native-dialog'
 import { parseConfigsByFilename } from '../controller/parse-configs'
+import { parseConfigsByJSON } from '../controller/parse-configs'
+import * as configModel from '../model/ss-config'
+
+const initialTip = 'drag and drop QRcode or JSON here'
 
 export default class extends Component {
 
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {
+            dragFlag: grey400,
+            tip: initialTip,
+        }
     }
     HandleClose() {
         hashHistory.goBack()
     }
 
-    saveImportConfigs = () => {
-        
+    saveImportConfigs = (e) => {
+        Promise.resolve().then(() => {
+            if (Array.isArray(this.state.importConfigs)) {
+                configModel.addConfigs(this.state.importConfigs)
+            } else {
+                configModel.addConfig(this.state.importConfigs)
+            }
+        }).then(() => {
+            this.setState({ importConfigs: null })
+            this.HandleClose()
+        })
     }
 
+    dragenter = (event) => {
+        this.setState({ dragFlag: blue400 })
+    }
 
+    dragleave = () => {
+        this.setState({ 
+            dragFlag: grey400,
+            tip: initialTip,
+        })
+    }
+
+    drop = (event) => {
+        let data = event.dataTransfer.getData('text')
+
+        parseConfigsByJSON(data).then((config) => {
+            console.dir(config);
+            this.setState({ 
+                dragFlag: green400,
+                tip: 'Parsing successfully!',
+                importConfigs: config,    
+             })
+        }).catch(e => {
+            this.setState({ 
+                dragFlag: red900,
+                tip: 'Parsing failed!',
+            })
+        })
+    }
 
     openFileDialog = () => {
         openFileDialog({
@@ -62,9 +105,17 @@ export default class extends Component {
                         </IconButton>
                     }
                 />            
-                <Paper style={styles.paper} zDepth={1} rounded={false}>
-                    <p style={styles.tip}>drag and drop QRcode or JSON here</p>
-                    <Add style={styles.add} color={grey400} />
+                <Paper 
+                    style={styles.paper} 
+                    zDepth={1} rounded={false}>
+                    <p style={styles.tip}>{this.state.tip}</p>
+                    <Add
+                        onDragEnter={this.dragenter}
+                        onDragLeave={this.dragleave}
+                        onDragOver={(e) => e.preventDefault()}
+                        onDrop={this.drop}
+                        style={styles.add} 
+                        color={this.state.dragFlag} />
                     <FlatButton 
                         onTouchTap={this.openFileDialog} 
                         style={styles.openFile} 

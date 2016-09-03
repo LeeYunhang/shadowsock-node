@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script>
+        function handleClick(e) {
+            const div = document.getElementsByTagName('div')[0]
+            div.appendChild(e.target)
+        }
+
+        function dragStart(event) {
+            event.dataTransfer.setData('text', `
+            {
+        "server": "10.22.16.101",
+            "server_port": "9998",
+            "password": "1234567890",
+            "method": "",
+            "remarks": "night",
+            "local_addr": "",
+            "local_port": "10000"
+    }
+            `)
+        }
+    </script>
+    <style>
+        div{
+            border: solid 1px black;
+        }
+    </style>
+</head>
+<body>
+    
+    <div draggable="true" ondragstart="dragStart(event)">
+        
+    </div>
+    <button id="drag" onclick="handleClick(event)">CLICK ME!</button>
+</body>
+</html>
