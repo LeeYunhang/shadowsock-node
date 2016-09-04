@@ -1,5 +1,6 @@
 # shadowsock-node
 a shadowsocks gui based on node.js
+Go to [dev](https://github.com/mrcodehang/shadowsock-node/tree/dev) branch to get latest version
 
 ## Screenshot
 
